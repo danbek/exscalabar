@@ -20,13 +20,17 @@
 			"low" : 500
 		};
 		$scope.data = Data.pas;
-
+		
+		$scope.dataf0 = [ [1435212352000, 0], [1435212352000, -2], [1435212352000, 3]];
+		$scope.dataIA = [ [1435212352000, 0], [1435212352000, -2], [1435212352000, 3]];
+		$scope.datap = [ [1435212352000, 0], [1435212352000, -2], [1435212352000, 3]];
+		$scope.dataQ = [ [1435212352000, 0], [1435212352000, -2], [1435212352000, 3]];
+		$scope.dataabs = [ [1435212352000, 0], [1435212352000, -2], [1435212352000, 3]];
+		
 		// Listen for data
 		$scope.$on('dataAvailable', function() {
 
 			$scope.data = Data.pas;
-			
-			//console.log($scope.data.cell[0].f0[0]);
 			
 			$scope.dataf0 = [ Data.pas.cell[0].f0, Data.pas.cell[1].f0, Data.pas.cell[2].f0, Data.pas.cell[3].f0, Data.pas.cell[4].f0 ];
 			$scope.dataIA = [ Data.pas.cell[0].IA, Data.pas.cell[1].IA, Data.pas.cell[2].IA, Data.pas.cell[3].IA, Data.pas.cell[4].IA ];

@@ -20,7 +20,7 @@
 (function() {
 	angular.module('main').directive('chart', function(){
     	return{
-        	restrict: 'E',
+        	restrict: 'EA',
         	link: function(scope, elem, attrs){
             
 	            var chart = null,
