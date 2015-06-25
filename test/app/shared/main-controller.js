@@ -24,7 +24,7 @@
         	link: function(scope, elem, attrs){
             
 	            var chart = null,
-    	            opts  = {xaxis: { mode: "time" } };
+    	            opts  = {xaxis: { mode: "time", label: "Time" } };
                    
         	    scope.$watch(attrs.ngModel, function(v){
             	    if(!chart){
