@@ -9,95 +9,250 @@ var rename = require('gulp-rename');
 var connect = require('gulp-connect');
 var open = require('gulp-open');
 var htmlmin = require('gulp-htmlmin');
+var sass = require('gulp-sass');
+var ngdocs = require('gulp-ngdocs');
+var bump = require('gulp-bump');
 
 /* Since order matters, we can't just glob everything, but we must
-* make sure that the files are in the correct order. Since we have
-* to alter this list and we don't watch everything, make sure to
-* restart gulp if this file is changed.
-*/
+ * make sure that the files are in the correct order. Since we have
+ * to alter this list and we don't watch everything, make sure to
+ * restart gulp if this file is changed.
+ */
 /* One thing that we have to be sure of is that the AngularJS dependencies
-* in each of the scripts are properly resolved and annotated before minification.
-* We can do this explicitly with the notation ['dependency', function(dependency){...}]
-* or we can drop this notation and use the gulp-ng-annotate.  I am trying to
-* keep the dependencies explicity, but look out for problems where these are
-* not properly called out (maybe do to a missed capital letter or a misspelling).
-*/
+ * in each of the scripts are properly resolved and annotated before minification.
+ * We can do this explicitly with the notation ['dependency', function(dependency){...}]
+ * or we can drop this notation and use the gulp-ng-annotate.  I am trying to
+ * keep the dependencies explicity, but look out for problems where these are
+ * not properly called out (maybe do to a missed capital letter or a misspelling).
+ */
 //var ngannotate = require('gulp-ng-annotate');
 
-var watch_list = ["app/shared/main.module.js",
-"app/shared/network-service.js",
-"app/shared/cvt-service.js",
-"app/shared/main-config.js",
-"app/shared/main-controller.js",
-"app/shared/data-service.js",
-"app/Messages/msg-directive.js",
-"app/Messages/msg-controller.js",
-"app/sidebar/sidebar-controller.js",
-"views/view-ctl/config.ctlr.js",
-"views/cals/startCal-ctl.js",
-"views/cals/buildCal-service.js",
-"views/cals/o3-table-ctl.js",
-"views/cals/saveProfile-service.js",
-"views/cals/saveData-ctrl.js",
-"views/cals/tableInput-ctlr.js",
-"views/view-ctl/filter-ctlr.js",
-"views/view-ctl/power-ctlr.js",
-"views/view-ctl/crd.ctlr.js",
-"views/view-ctl/pas-ctlr.js",
-"views/view-ctl/pas-spk-ctlr.js",
-"views/view-ctl/pas-las-ctlr.js",
-"views/view-ctl/flow.ctlr.js",
-"views/view-ctl/humidifier-ctlr.js",
-"app/msg/msg-directive.js",
-"app/sidebar/sidebar-directive.js",
-"app/navigation/nav.service.js",
-"app/navigation/nav-directive.js",
-"app/navigation/nav.ctlr.js",
-"assets/contextMenu.js"];
+
+var watch_list = ["main/main.module.js",
+    "network/network-service.js",
+    "cvt/cvt-service.js",
+    "main/main-config.js",
+    "main/ex.readconfig.svc.js",
+    "main/ex.main.ctl.js",
+    "data/data-service.js",
+    "msgs/ex.msg.svc.js",
+    "msgs/ex.msg.directive.js",
+    "msgs/ex.msg.ctl.js",
+    "sidebar/sidebar-controller.js",
+    "alicat/alicat.config.ctlr.js",
+    "alicat/ex.flow.svc.js",
+    "footer/ex.footer.ctl.js",
+    "power/ex.power.ctl.js",
+    "config/config.ctlr.js",
+    "filter/ex.filter.ctl.js",
+    "crd/ex.crd.svc.js",
+    "crd/ex.crd.ctl.js",
+    "crd/ex.crdplot.dir.js",
+    "crd/ex.crdwvfm.dir.js",
+    "pas/ex.pas.ctl.js",
+    "pas/ex.pas.svc.js",
+    "pas/ex.passpk.ctl.js",
+    "pas/ex.paslas.ctl.js",
+    "pas/ex.pasplot.dir.js",
+    "pas/ex.paswvfm.dir.js",
+    "pas/ex.pastemp.dir.js",
+    "alicat/ex.flow.ctl.js",
+    "alicat/ex.flowplot.dir.js",
+    "ppt/ex.ppt.svc.js",
+    "humidity/ex.humidity.ctl.js",
+    "o3/startCal-ctl.js",
+    "o3/ex.calibration.ctl.js",
+    "o3/ex.calibration.svc.js",
+    "o3/saveProfile-service.js",
+    "o3/saveData-ctrl.js",
+    "o3/tableInput-ctlr.js",
+    "sidebar/sidebar-directive.js",
+    "nav/nav.service.js",
+    "nav/nav-directive.js",
+    "nav/nav.ctlr.js",
+    "checklist/ex.checklist.ctl.js",
+    "checklist/ex.checklist.svc.js",
+    "vaisala/ex.vaisala.svc.js",
+    "vaisala/ex.vaisala.ctl.js",
+    "vaisala/ex.vaisalaplot.dir.js",
+    "tetech/ex.tetech.ctl.js",
+    "tetech/ex.tetech.svc.js",
+    "tetech/ex.tetechplot.dir.js",
+    "ppt/ex.ppt.svc.js",
+    "ppt/ex.pptplot.dir.js",
+    "meerstetter/ex.meerstetter.svc.js",
+    "meerstetter/ex.meerstetter.ctl.js",
+    "meerstetter/ex.meerstetterplot.dir.js",
+    "common/ex.common.ctl.js",
+    "device/ex.devstatus.svc.js",
+    "device/ex.devstatus.ctl.js"
+];
+
+
+var js_dist = 'js';
+// List of external assets required by the GUI
+// These are not expected to change.
+var ext_assets = ["assets/jquery/jquery-2.1.4.js",
+    "assets/angular.js",
+    "assets/angular-route.js",
+    "assets/ui-bootstrap-0.9.0.js",
+    "assets/ui-bootstrap-tpls-0.9.0.js",
+    "assets/cm/contextMenu.js",
+    "assets/angular/angular-sanitize.js",
+    "assets/angular/round-progress/roundProgress.js",
+    "assets/angular/angular-scrollable-table/angular-scrollable-table.js"];
+
+// Angular Dygraph assets
+var int_assets = ["assets/ad/js/cirrus-dygraphs-dev.js",
+    "assets/ad/js/angular-dygraph.js",
+    "assets/cui/ibutton/ibutton.js",
+    "assets/cui/inumeric/inumeric.js",
+    "assets/cui/istring/istring.js"];
+
+
+// Tested list of dygraph
+var docList = [
+//"assets/angular.js",
+    //"assets/angular-route.js",
+    "assets/ui-bootstrap-0.9.0.js",
+    "assets/ui-bootstrap-tpls-0.9.0.js",
+    "assets/cm/contextMenu.js",
+    //"assets/angular/angular-sanitize.js",
+    "main/main.module.js",
+    "main/ex.readconfig.svc.js",
+    "main/main-config.js",
+    "main/ex.main.ctl.js",
+    "data/data-service.js",
+    "msgs/msg-directive.js",
+    "network/network-service.js",
+    "cvt/cvt-service.js",
+    "nav/nav.ctlr.js",
+    "alicat/ex.flow.svc.js",
+    "alicat/ex.flow.ctl.js",
+    "alicat/ex.flowplot.dir.js",
+    "msgs/ex.msg.svc.js",
+    "crd/ex.crd.svc.js",
+    "pas/ex.pas.svc.js",
+    "pas/ex.pasplot.dir.js",
+    "tetech/ex.tetech.ctl.js",
+    "tetech/ex.tetech.svc.js",
+    "tetech/ex.tetechplot.dir.js",
+    "meerstetter/ex.meerstetter.ctl.js",
+    "meerstetter/ex.meerstetter.svc.js"
+];
 
 
 /* Lint Task - check for errors in the js code... */
-gulp.task('lint', function() {
-	return gulp.src(watch_list)
-	.pipe(jshint())
-	.pipe(jshint.reporter('default'));
+gulp.task('lint', function () {
+    return gulp.src(watch_list)
+        .pipe(jshint())
+        .pipe(jshint.reporter('default'))
 });
 
 // Concatenate & Minify JS
-gulp.task('scripts', function() {
-	return gulp.src(watch_list)
-	.pipe(concat('exscalabar.js'))
-	.pipe(gulp.dest('assets'))
-	.pipe(rename('exscalabar.min.js'))
-	.pipe(uglify())
-	.pipe(gulp.dest('assets'));
+gulp.task('scripts', function () {
+    return gulp.src(watch_list)
+        .pipe(concat('exscalabar.js'))
+        .pipe(gulp.dest(js_dist))
+        .pipe(rename('exscalabar.min.js'));
+        //.pipe(uglify())
+        //.pipe(gulp.dest(js_dist));
 });
 
-// Watch Files For Changes
-gulp.task('watch', function() {
-	gulp.watch(watch_list, ['lint', 'scripts']);
+gulp.task('ext_assets', function () {
+    return gulp.src(ext_assets)
+        .pipe(concat('assets.js'))
+        .pipe(gulp.dest(js_dist));
+});
+
+
+gulp.task('int_assets', function () {
+    return gulp.src(int_assets)
+        .pipe(concat('int_assets.js'))
+        .pipe(gulp.dest(js_dist));
+});
+
+/* Handle SASS preprocessor files */
+gulp.task('styles', function () {
+    gulp.src('sass/**/*.scss')
+        .pipe(sass().on('error', sass.logError))
+        .pipe(gulp.dest('./css/'));
+});
+
+gulp.task('ngdocs', function () {
+
+    var options = {
+        html5Mode: false,
+        title: 'EXSCALABAR UI'
+    }
+    return gulp.src(docList)
+        .pipe(ngdocs.process(options))
+        .pipe(gulp.dest('./docs'));
+
+});
+
+
+/* Make a connection on port 8080. */
+gulp.task('connect', function () {
+    connect.server({
+        livereload: true
+    });
 });
 
 /* Make a connection on port 8080. */
-gulp.task('connect', function(){
-	connect.server({
-		livereload:true
-	});
+gulp.task('connect2docs', function () {
+    connect.server({
+        root: 'docs',
+        livereload: true,
+        port: 8000
+    });
+    console.log('Server started on http://localhost:8000');
+});
+
+// Watch Files For Changes
+gulp.task('watch', function () {
+    gulp.watch(watch_list, ['lint', 'scripts', 'ngdocs']);
+    //gulp.watch('sass/**/*.scss', ['styles']);
 });
 
 /* This will open the UI in the default browser. */
-gulp.task('open', function(){
-	gulp.src(__filename)
-	.pipe(open({uri: 'http://localhost:8080'}));
+gulp.task('open', function () {
+    gulp.src(__filename)
+        .pipe(open({
+            uri: 'http://localhost:8080'
+        }));
+});
+
+gulp.task('bump-major', function () {
+    gulp.src(['./package.json', './ui.json'])
+        .pipe(bump({
+            type: 'major'
+        }))
+        .pipe(gulp.dest('./'));
+});
+
+gulp.task('bump-minor', function () {
+    gulp.src(['./package.json', './ui.json'])
+        .pipe(bump({
+            type: 'minor'
+        }))
+        .pipe(gulp.dest('./'));
+});
+
+gulp.task('bump-patch', function () {
+    gulp.src(['./package.json', './ui.json'])
+        .pipe(bump())
+        .pipe(gulp.dest('./'));
 });
 
 /*gulp.task('minify', function() {
-  return gulp.src('views/*.html')
-    .pipe(htmlmin({collapseWhitespace: true}))
-    .pipe(gulp.dest('dist'))
-});*/
+ return gulp.src('views/*.html')
+ .pipe(htmlmin({collapseWhitespace: true}))
+ .pipe(gulp.dest('dist'))
+ });*/
 
 // Default Task
-gulp.task('default', ['lint', 'scripts', 'connect', 'open', 'watch']);
-
+gulp.task('default', ['lint', 'scripts', 'ext_assets', 'int_assets', 'styles', 'ngdocs', 'connect', 'connect2docs', 'open', 'watch']);
+gulp.task('no-lint', ['scripts', 'ext_assets', 'int_assets', 'styles', 'ngdocs', 'connect', 'connect2docs', 'open', 'watch']);
+gulp.task('no-browse', ['lint', 'scripts', 'styles', 'ngdocs', 'watch', 'connect2docs']);
 // TODO: add different builds for distribution and development...

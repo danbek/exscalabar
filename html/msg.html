@@ -1,0 +1,13 @@
+<div ng-controller="ExMsgCtl">
+    <div class="row">
+        <div class="col-md-3 col-lg-2 col-sm-3 col-xs-4">
+            <cui-button ival="test" ng-click="clrMsgs()">Clear Messages</cui-button>
+        </div>
+        <div class="col-md-9 col-lg-10 col-sm-9 col-xs-8">
+            <div style="max-width:100%; padding:5px;border-style:inset;border-color:whitesmoke;border-width:2px;background-color:black; 
+            font-size:100%; height:500px;overflow-y:scroll;" ng-bind-html="msgs">
+            </div>
+        </div>
+    </div>
+</div>
+</div>

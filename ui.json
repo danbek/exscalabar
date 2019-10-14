@@ -1,0 +1,182 @@
+{
+  "name": "EXSCALABAR",
+  "version": "1.0.0.1",
+  "pasplot": {
+    "color": [
+      "cyan",
+      "crimson",
+      "green",
+       "red",
+       "blue"
+    ],
+    "strokeWidth": [
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "pattern": [
+        "DASHED_LINE",
+        "DASHED_LINE",
+        null,
+      null,
+      null
+    ],
+    "xGrid": true,
+    "yGrid": true,
+    "names": [
+      "Blue TD",
+      "Red TD",
+      "Green Dry",
+      "Red Dry",
+      "Blue Dry"
+    ]
+  },
+  "crdplot": {
+    "color": [
+      "lightblue",
+      "white",
+      "blue",
+      "red"
+    ],
+    "strokeWidth": [
+      2,
+      2,
+      2,
+      2
+    ],
+    "pattern": [
+      null,
+      null,
+      null,
+      null
+    ],
+    "names": [
+      "Blue High RH",
+      "Blue Med RH",
+      "Blue Dry",
+      "Red Dry"
+    ],
+    "xGrid": true,
+    "yGrid": true
+  },
+  "flowplot": {
+    "color": [
+      "purple",
+      "cyan",
+      "blue",
+      "red",
+      "green",
+      "red",
+      "blue",
+      "black",
+      "pink",
+      "white",
+      "yellow",
+      "magenta"
+    ],
+    "strokeWidth": [
+      2
+    ],
+    "pattern": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      "DASHED_LINE",
+      "DASHED_LINE"
+    ],
+    "xGrid": true,
+    "yGrid": true
+  },
+  "mtec": {
+    "color": [
+      "blue",
+      "green",
+      "red",
+      "blue",
+      "red",
+      "orange",
+      "white"
+   ],
+    "strokeWidth": [
+      2
+    ],
+    "pattern": [
+      null,
+      null,
+      null,
+      "DASHED_LINE",
+      "DASHED_LINE",
+      null,
+      null
+    ],
+    "xGrid": true,
+    "yGrid": true
+  },
+  "ppt": {
+    "color": [
+        "purple",
+        "white",
+      "red",
+      "green",
+      "blue"
+    ],
+    "strokeWidth": [
+      2
+    ],
+    "pattern": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "xGrid": true,
+    "yGrid": true
+  },
+  "vaisala": {
+    "color": [
+        "cyan",
+        "purple",
+        "blue",
+      "red",
+        "green",
+        "red",
+      "blue",
+      "white",
+        "yellow"
+    ],
+    "strokeWidth": [
+      2
+    ],
+    "pattern": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      "DASHED_LINE",
+      "DASHED_LINE"
+    ],
+    "xGrid": true,
+    "yGrid": true
+  },
+  "tec": {
+    "color": [
+      "red",
+      "blue"
+    ],
+    "strokeWidth": [
+      2
+    ],
+    "pattern": [
+      null,
+      "DASHED_LINE"
+    ],
+    "xGrid": true,
+    "yGrid": true
+  }
+}

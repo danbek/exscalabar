@@ -1,0 +1,86 @@
+<div ng-controller="ExCrdCtl">
+    <div class="row">
+        <div class="col-md-3 col-lg-2">
+            <div class="panel panel-default">
+                <div class="panel-heading">Laser Control</div>
+                <div class="panel-body">
+                    <cui-numeric ng-model="rate" width="45" dtype="int" evnt-func="setRate(rate)">f (Hz)
+                    </cui-numeric>
+                    <cui-numeric ng-model="dc" width="45" evnt-func="setDC(dc)">DC (%)</cui-numeric>
+                </div>
+            </div>
+
+            <div ng-repeat="ctl in laser_ctl track by $index">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ctl.id}}</div>
+                    <div class="panel-body">
+                        <cui-numeric width="45" ng-model="ctl.k" evnt-func="setLaserGain()" data-toggle="tooltip" data-placement="right" title="Laser gain in %.">k</cui-numeric>
+                        <cui-button ival="ctl.en" ng-model="ctl.en" ng-click="setEn($index)">Power</cui-button>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default" data-toggle="tooltip" data-placement="right" title="PMT gains in %.">
+                <div class="panel-heading">
+                    PMT Gain
+                </div>
+                <div class="panel-body">
+                    <div ng-repeat="p in pmt track by $index">
+                        <cui-numeric ng-model="pmt[$index]" width=10 evnt-func="setGain($index)">{{$index+1}}
+                        </cui-numeric>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">Purge</div>
+                <div class="panel-body">
+                    <cui-button ival="purge.pos" ng-click="purge.setValve()">Flow Ctl</cui-button>
+
+                    <!--<cui-numeric ng-model="purge.flow"
+                                 width=10
+                                 evnt-func="purge.setFlow()">Q
+                    </cui-numeric>-->
+                </div>
+            </div>
+            <cui-button ival="show_wvfm">
+                <div tooltip-placement="bottom" tooltip="Send waveform data.  Must have bandwidth to support this functionality." tooltip-trigger="mouseenter" tooltip-append-to-body="true" ng-click="update_wvfm_state()">Send Waveforms
+                </div>
+            </cui-button>
+            <cui-button ival="write_wvfm_data">
+                <div tooltip-placement="bottom" tooltip="Write CRD waveform data to file." tooltip-trigger="mouseenter" tooltip-append-to-body="true" ng-click="update_wvfm_write()">Write Waveforms
+                </div>
+            </cui-button>
+            <cui-button ival="write_taus">
+                <div tooltip-placement="bottom" tooltip="Write CRD tau data to file." tooltip-trigger="mouseenter" tooltip-append-to-body="true" ng-click="update_tau_write()">Write Taus
+                </div>
+            </cui-button>
+        </div>
+        <div class="col-md-9 col-lg-10">
+            <div class="row">
+                <ex-crdplot></ex-crdplot>
+            </div>
+            <div class="row">
+                <ex-crd-wvfm></ex-crd-wvfm>
+            </div>
+        </div>
+    </div>
+    <!--<div class="row">
+        <div class="col-md-3 col-sm-6" ng-repeat="cell in data.tau[0] track by $index" ng-if="$index > 0">
+            <div class="panel panel-default">
+                <div class="panel-heading">Cell {{$index}}</div>
+                <div class="panel-body">
+                    <cui-numeric ng-model="data.tau[0][$index]" width="60" readonly>&tau; (&mu;s)</cui-numeric>
+                    <cui-numeric ng-model="data.tau0[0][$index]" width="60" readonly>&tau;<sub>0</sub> (&mu;s)
+                    </cui-numeric>
+                    <cui-numeric ng-model="data.taucorr[0][$index]" width="60" readonly>&tau;` (&mu;s)
+                    </cui-numeric>
+                    <cui-numeric ng-model="data.tau0corr[0][$index]" width="60" readonly>&tau;<sub>0</sub>` (&mu;s)
+                    </cui-numeric>
+                    <cui-numeric ng-model="data.ext[0][$index]" width="60" readonly>&sigma; (Mm<sup>-1</sup>)
+                    </cui-numeric>
+                </div>
+            </div>
+        </div>
+    </div>-->
+</div>

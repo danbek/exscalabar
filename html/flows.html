@@ -1,0 +1,54 @@
+<div ng-controller="ExFlowCtl">
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">Setpoints</div>
+            <div class="panel-body">
+                <div ng-repeat="(key,d) in DeviceData">
+                    <cui-numeric ng-if="d.isController" width="45" evnt-func="updateSP(d, key)"
+                                 ng-model="d.Qsp">{{d.label}}</cui-numeric>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="row">
+            <div class="col-md-12">
+                <ex-flowplot></ex-flowplot>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive" style="color:white">
+                    <table class="table" id="cal-table">
+                        <!--<colgroup>
+                        <col class="col-md-4" />
+                        <col class="col-md-8" />
+                    </colgroup>-->
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Q (lpm)</th>
+                            <th>T (&deg;C)</th>
+                            <th>P (mb)</th>
+                            <th>Q0 (slpm)</th>
+                            <th>Qsp (lpm)</th>
+                            <th>leak (hPa/min)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="(key,d) in DeviceData">
+                            <td>{{d.label}}</td>
+                            <td>{{d.Q}}</td>
+                            <td>{{d.T}}</td>
+                            <td>{{d.P}}</td>
+                            <td>{{d.Q0}}</td>
+                            <td>{{d.Qsp}}</td>
+                            <td>{{d.leak.toFixed(2)}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
